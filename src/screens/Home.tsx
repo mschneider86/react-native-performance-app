@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
+import { FriendList } from '../components/FriendList';
 
 export function Home() {
   const [name, setName] = useState('');
@@ -16,6 +17,8 @@ export function Home() {
         onChangeText={setName}
       />
       <Button title='Buscar' onPress={handleSearch} />
+
+      <FriendList data={[]} />
     </View>
   );
 }
