@@ -1,16 +1,28 @@
 import React, { useState } from 'react';
 
-import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Button,
+  ScrollView,
+} from 'react-native';
 import { FriendList } from '../components/FriendList';
 
 export function Home() {
   const [name, setName] = useState('');
+  const [friends, setFriends] = useState([]);
 
-  function handleSearch() {}
+  async function handleSearch() {
+    const response = await fetch(`http://192.168.0.70:3333/friends?q=${name}`);
+    const data = await response.json();
+    setFriends(data);
+  }
 
   return (
     <View style={styles.container}>
-      <Text>Amigos</Text>
+      <Text style={styles.title}>Amigos</Text>
       <TextInput
         style={styles.input}
         placeholder='Nome do cliente'
@@ -18,7 +30,9 @@ export function Home() {
       />
       <Button title='Buscar' onPress={handleSearch} />
 
-      <FriendList data={[]} />
+      <ScrollView style={styles.list}>
+        <FriendList data={friends} />
+      </ScrollView>
     </View>
   );
 }
@@ -29,9 +43,16 @@ const styles = StyleSheet.create({
     marginTop: 100,
     padding: 25,
   },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
   input: {
     borderWidth: 1,
     padding: 7,
-    marginBottom: 10,
+    marginVertical: 10,
+  },
+  list: {
+    marginTop: 20,
   },
 });
